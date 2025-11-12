@@ -11,7 +11,8 @@ namespace Class
     internal class Program
     {
 
-        // initialized global variables (collection of fields)
+      // --- Static Fields (Global Data Collections) ---
+     // These fields are accessible by all static methods in the Program class.
 
         private static Books[] bookArray;
         private static Borrowers[] borrowerList;
