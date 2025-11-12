@@ -11,7 +11,7 @@ namespace Class
     internal class Program
     {
 
-        // initialized global variables (collection of objects)
+        // initialized global variables (collection of fields)
 
         private static Books[] bookArray;
         private static Borrowers[] borrowerList;
