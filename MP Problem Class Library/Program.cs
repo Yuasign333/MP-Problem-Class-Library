@@ -27,7 +27,7 @@ namespace Class
         static void AllMethods()
         {
 
-            // delcare global arrays
+            // delcare global fields 
 
             bookArray = new Books[50]; // fixed 50 books
             borrowerList = new Borrowers[5]; // fixed 5 borrowers
