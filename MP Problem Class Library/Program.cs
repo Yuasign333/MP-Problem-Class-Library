@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,14 +11,16 @@ namespace Class
     internal class Program
     {
 
-      // --- Static Fields (Global Data Collections) ---
-     // These fields are accessible by all static methods in the Program class.
+        // --- Static Fields (Global Data Collections) ---
+        // These fields are accessible by all static methods in the Program class.
 
-        private static Books[] bookArray;
-        private static Borrowers[] borrowerList;
-        static BorrowedRecord[] borrowedList;
-        static int borrowedCount;
+        private static Books[] bookArray; // array to hold book objects
 
+        private static Borrowers[] borrowerList; // array to hold borrower objects
+
+        static BorrowedRecord[] borrowedList; // array to hold borrowed record objects
+
+        static int borrowedCount; // to track number of borrowed records
 
         static void Main(string[] args)
         {
@@ -28,11 +30,14 @@ namespace Class
         static void AllMethods()
         {
 
-            // delcare global fields 
+            // Initialized global fields (objects)
 
             bookArray = new Books[50]; // fixed 50 books
             borrowerList = new Borrowers[5]; // fixed 5 borrowers
             borrowedList = new BorrowedRecord[50]; // max 50 borrowed records
+
+            // global variable 
+
             borrowedCount = 0; // initialize borrowed count
 
             // method calling 
@@ -151,8 +156,11 @@ namespace Class
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine($"\n{borrower.getBorrowerID()} - {borrower.getFullName()}");
                 }
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\nPress any key to proceed to login...");
                 Console.ReadKey();
+                Console.ResetColor();
+
                 UserLogin(); // enter user login method
             }
       
@@ -162,11 +170,9 @@ namespace Class
  
         static void UserLogin()
         {
-            // important UserLogin method variables
-
+           
             bool validInput = false;
-            string userName = "";
-
+  
             do
             {
                 Console.Clear();
@@ -175,12 +181,12 @@ namespace Class
                 Console.ResetColor();
 
                 Console.Write("\nEnter your name (Lastname, Firstname): "); // This should be the exact format (cause this is case-sensitive)
-                userName = Console.ReadLine().Trim().ToUpper();
+               string userName = Console.ReadLine().Trim().ToUpper();
 
                 
-                Borrowers currentUser = null;
+                Borrowers currentUser = null; // variable to hold current user
 
-                foreach (var borrower in borrowerList)
+                foreach (var borrower in borrowerList) // loop through borrower list
                 {
                     // Check if borrower is not null, and if name matches any part of full name (case-insensitive)
                     if (borrower.getFullName().ToUpper().Contains(userName))
@@ -189,7 +195,7 @@ namespace Class
 
                         validInput = true;
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"\nWelcome, {currentUser.getFullName()}! Your ID is {currentUser.getBorrowerID()}");
+                        Console.WriteLine($"\nWelcome! {currentUser.getFirstName().ToUpper()} {currentUser.getLastName().ToUpper()}! Your ID is {currentUser.getBorrowerID()}"); // display welcome message with ID
                         Console.ResetColor();
                         Thread.Sleep(3000);
 
@@ -220,15 +226,20 @@ namespace Class
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Cyan;
 
-                Console.WriteLine($"===== WELCOME {currentUser.getFullName()} =====");
+                // display welcome message with user's name
+                Console.WriteLine($"===== WELCOME {currentUser.getFirstName().ToUpper()} {currentUser.getLastName().ToUpper()} =====");
                 Console.ResetColor();
 
+                // display menu options
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("\n1. View Available Books");
                 Console.WriteLine("\n2. Borrow Book");
                 Console.WriteLine("\n3. View Borrowed Books");
                 Console.WriteLine("\n4. Return Book");
                 Console.WriteLine("\n5. Logout");
+                Console.ResetColor();
 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\nSelect an option (1-5): ");
                 string choice = Console.ReadLine();
 
@@ -237,28 +248,37 @@ namespace Class
                     case "1":
                         ViewAvailableBooks();
                         break;
+
                     case "2":
+
                         BorrowBook(currentUser);
                         break;
+
                     case "3":
                         ViewBorrowedBooks(currentUser);
                         break;
+
                     case "4":
                         ReturnBook(currentUser);
                         break;
+
                     case "5":
+
                         Console.WriteLine("\nLogging out...");
                         Thread.Sleep(800);
                         exit = true;
                         break;
+
                     default:
                         Console.WriteLine("\nInvalid option. Please try again.");
                         break;
                 }
                 if (!exit)
                 {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPress any key to return to the menu...");
                     Console.ReadKey();
+                    Console.ResetColor();
                 }
                 if (exit)
                 {
@@ -285,9 +305,11 @@ namespace Class
             int availableBooksCount = 0;
 
             // Print the total size first
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\nTotal Books in Library: {bookArray.Length}");
+            Console.WriteLine();
 
-            foreach (var book in bookArray)
+            foreach (var book in bookArray) // loop through book array
             {
                 if (book != null)
                 {
@@ -302,17 +324,15 @@ namespace Class
                             isBorrowed = true;
                             break;
                         }
+                       
                     }
 
                     if (isBorrowed)
-                    {
-                      
-                        Console.ForegroundColor = ConsoleColor.Red;
-                  
+                    {                   
+                       Console.ForegroundColor = ConsoleColor.Red;     
                     }
                     else
-                    {
-              
+                    {             
                         Console.ForegroundColor = ConsoleColor.Green;
                       
                         availableBooksCount++;
@@ -320,6 +340,7 @@ namespace Class
 
                     // Display the book information (will be red or green based on status)
                     Console.WriteLine(book.getFullInfo());
+                    Console.WriteLine();
 
                     Console.ResetColor(); 
                 }
@@ -334,6 +355,7 @@ namespace Class
         static void BorrowBook(Borrowers currentUser)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("=========== BORROW A BOOK ===========");
 
           
@@ -351,12 +373,14 @@ namespace Class
 
             if (alreadyBorrowed)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nYou already borrowed a book. You can only borrow one.");
                 Console.ReadKey();
                 return;
             }
 
             // Show available books
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nAvailable books:\n");
             for (int i = 0; i < bookArray.Length; i++)
             {
@@ -372,13 +396,15 @@ namespace Class
 
                 if (bookArray[i] != null && isBorrowed == false) // only display the books that are not borrowed
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine(bookArray[i].getFullInfo());
+                    Console.WriteLine();
                 }
             }
-
+           Console.ForegroundColor = ConsoleColor.White;
             Console.Write("\nEnter Book ID to borrow: ");
             string id = Console.ReadLine().Trim().ToUpper();
-
+            Console.ResetColor();
             Books selectedBook = null;
             for (int i = 0; i < bookArray.Length; i++)
             {
@@ -391,6 +417,7 @@ namespace Class
 
             if (selectedBook == null)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nBook not found!");
                 Console.ReadKey();
                 return;
@@ -401,22 +428,24 @@ namespace Class
             // Add record
             borrowedList[borrowedCount] = new BorrowedRecord(currentUser, selectedBook);
             borrowedCount++;
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nYou successfully borrowed \"" + selectedBook.getTitle() + "\"!");
             Console.ReadKey();
+            Console.ResetColor();
         }
 
 
         static void ViewBorrowedBooks(Borrowers currentUser)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("=========== YOUR BORROWED BOOK ===========");
 
             bool found = false;
 
-            for (int i = 0; i < borrowedCount; i++)
+            for (int i = 0; i < borrowedCount; i++) // loop through borrowed records
             {
-                if (borrowedList[i].GetBorrower() == currentUser)
+                if (borrowedList[i].GetBorrower() == currentUser) // check if current user matches borrower
                 {
                     Console.WriteLine("\n" + borrowedList[i].GetRecordInfo());
                     found = true;
@@ -426,15 +455,16 @@ namespace Class
 
             if (found == false)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nYou have not borrowed any books.");
             }
 
-            Console.WriteLine("\nPress any key to return...");
-            Console.ReadKey();
+      
         }
 
         static void ReturnBook(Borrowers currentUser)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Clear();
             Console.WriteLine("=========== RETURN BOOK ===========");
 
@@ -451,20 +481,21 @@ namespace Class
 
             if (index == -1)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nYou have no borrowed book to return.");
                 Console.ReadKey();
                 return;
             }
 
-            Books returnedBook = borrowedList[index].GetBook();
+            Books returnedBook = borrowedList[index].GetBook(); // get the book to be returned
 
-            // Shift array
-            for (int i = index; i < borrowedCount - 1; i++)
+            
+            for (int i = index; i < borrowedCount - 1; i++) // shift records to remove the returned book
             {
                 borrowedList[i] = borrowedList[i + 1];
             }
-            borrowedList[borrowedCount - 1] = null;
-            borrowedCount--;
+            borrowedList[borrowedCount - 1] = null; // clear the last record
+            borrowedCount--; // decrease the count
 
             Console.WriteLine("\nYou returned \"" + returnedBook.getTitle() + "\" successfully!");
             Console.ReadKey();
