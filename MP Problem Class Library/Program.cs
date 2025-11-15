@@ -52,7 +52,7 @@ namespace Class
 
             ViewBorrowers();
 
-            // note: othwr method calls are inside ViewBorrowers, UserLogIn and ShowMainMenu methods
+            // note: other method calls are inside ViewBorrowers, UserLogIn and ShowMainMenu methods
 
         }
 
